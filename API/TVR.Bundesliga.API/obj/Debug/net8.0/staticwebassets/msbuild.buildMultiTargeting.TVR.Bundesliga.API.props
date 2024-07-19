@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/TVR.Bundesliga.API.props" />
+</Project>
