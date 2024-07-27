@@ -16,6 +16,16 @@ if (string.IsNullOrEmpty(dbConnectionString))
 builder.Services.AddDbContext<EventDb>(d => d.UseNpgsql(dbConnectionString));
 builder.Services.AddDbContext<GuestDb>(d => d.UseNpgsql(dbConnectionString));
 builder.Services.AddDbContext<TicketDb>(d => d.UseNpgsql(dbConnectionString));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        corsBuilder =>
+        {
+            corsBuilder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
 
 var app = builder.Build();
 
@@ -73,8 +83,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+   
 }
 
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
 app.Run();

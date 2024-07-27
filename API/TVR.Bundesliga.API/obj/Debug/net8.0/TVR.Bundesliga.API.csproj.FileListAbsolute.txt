@@ -214,3 +214,4 @@
 /Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API/obj/Debug/net8.0/TVR.Bundesliga.API.pdb
 /Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API/obj/Debug/net8.0/TVR.Bundesliga.API.genruntimeconfig.cache
 /Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API/obj/Debug/net8.0/ref/TVR.Bundesliga.API.dll
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API/obj/Debug/net8.0/TVR.Bundesliga.API.sourcelink.json
