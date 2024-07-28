@@ -34,9 +34,11 @@ app.MapGet("/", () => "Es gibt nur ein Gas: Vollgas! Es gibt nur ein Rat: Refrat
 app.MapGet("/events", async (EventDb db) => 
     await db.Events.ToListAsync());
 
-app.MapGet("/events/previous", async (EventDb db) =>
-    await db.Events.Where(e => 
-        e.Date < DateTimeOffset.Now).ToListAsync())
+app.MapGet("/events/previous", (EventDb db) =>
+    {
+        var now = DateTimeOffset.UtcNow;
+        return db.Events.Where(e => e.Date < now).ToListAsync();
+    })
     .Produces(StatusCodes.Status200OK);
 
 app.MapGet("/events/{eventId:int}", async (int eventId, EventDb db) =>
@@ -44,9 +46,12 @@ app.MapGet("/events/{eventId:int}", async (int eventId, EventDb db) =>
     .Produces(StatusCodes.Status200OK)
     .ProducesProblem(StatusCodes.Status404NotFound);
 
-app.MapGet("/events/upcoming", async (EventDb db) => 
-    await db.Events.Where(e => 
-        e.Date >= DateTimeOffset.Now).ToListAsync())
+app.MapGet("/events/upcoming", (EventDb db) =>
+    {
+        var now = DateTimeOffset.UtcNow;
+        return db.Events.Where(e =>
+            e.Date >= now).ToListAsync();
+    })
     .Produces(StatusCodes.Status200OK);
 
 app.MapPost("/events", async (Event newEvent, EventDb db) =>

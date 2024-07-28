@@ -1,24 +1,20 @@
 <template>
   <div class="q-pa-md" style="max-width: 400px">
-    <q-form
-      @submit="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md"
-    >
+    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <q-input
         filled
         v-model="eventName"
         label="Name des Events"
-        hint='Name des Events, dass du anlegen möchtest.'
+        hint="Name des Events, dass du anlegen möchtest."
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Bitte gib etwas ein.']"
+        :rules="[(val: string) => !!val && val.length > 0 || 'Bitte gib etwas ein.']"
       />
 
       <q-input
         filled
         v-model="eventLeague"
         label="Liga"
-        hint='Liga, in der das Event stattfindet (optional).'
+        hint="Liga, in der das Event stattfindet (optional)."
       />
 
       <q-input filled v-model="eventDate" hint="Zeitpunkt, an dem das Event beginnt.">
@@ -52,68 +48,71 @@
         <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
       </div>
     </q-form>
-
   </div>
 </template>
-<script>
-import { useQuasar, date as quasarDate } from 'quasar';
-import { ref } from 'vue';
 
-export default {
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
+import { useQuasar, date as quasarDate } from 'quasar';
+import { EventToCreate } from './models';
+
+export default defineComponent({
   setup() {
     const $q = useQuasar();
 
-    const eventName = ref(null);
-    const eventLeague = ref(null);
-    const eventDate = ref(quasarDate.formatDate(new Date(), 'YYYY-MM-DD HH:mm'));
+    const eventName = ref<string>('');
+    let eventLeague: string | undefined = undefined;
+    const eventDate = ref<string>(quasarDate.formatDate(new Date(), 'YYYY-MM-DD HH:mm'));
+    const API_BASE_URL = process.env.TICKET_API_BASE_URL;
+    console.log('API_BASE_URL:', API_BASE_URL);
+
+    const onSubmit = async () => {
+
+        const isoDate = new Date(eventDate.value.replace(' ', 'T')).toISOString();
+        const eventToCreate: EventToCreate = {
+          name: eventName.value,
+          league: eventLeague,
+          date: isoDate
+        };
+
+        const response = await fetch(`${API_BASE_URL}/events`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(eventToCreate)
+        });
+
+        if (!response.ok) {
+          $q.notify({
+            color: 'red',
+            textColor: 'white',
+            icon: 'cloud_error',
+            message: `Ein Fehler ist aufgetreten: ${response.status}: ${response.statusText}`
+          });
+        }
+
+        $q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Event angelegt!'
+        });
+    };
+
+    const onReset = () => {
+      eventName.value = '';
+      eventLeague = undefined;
+      eventDate.value = quasarDate.formatDate(new Date(), 'YYYY-MM-DD HH:mm');
+    };
 
     return {
       eventName,
       eventDate,
       eventLeague,
-
-      async onSubmit() {
-        try {
-          const isoDate = new Date(eventDate.value.replace(' ', 'T')).toISOString();
-          const response = await fetch('https://localhost:7188/events', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              name: eventName.value,
-              league: eventLeague.value,
-              date: isoDate
-            })
-          });
-
-          console.log(JSON.stringify(await response.json()));
-          if (!response.ok) {
-            throw response.error;
-          }
-
-          $q.notify({
-            color: 'green-4',
-            textColor: 'white',
-            icon: 'cloud_done',
-            message: 'Event angelegt!'
-          });
-        } catch (e) {
-          $q.notify({
-            color: 'red',
-            textColor: 'white',
-            icon: 'cloud_error',
-            message: $`Ein Fehler ist aufgetreten: ${e.message}`
-          });
-        }
-      },
-
-      onReset() {
-        eventName.value = null;
-        eventLeague.value = null;
-        eventDate.value = quasarDate.formatDate(new Date(), 'YYYY-MM-DD HH:mm');
-      }
+      onSubmit,
+      onReset
     };
   }
-};
+});
 </script>
