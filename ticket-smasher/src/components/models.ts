@@ -19,3 +19,20 @@ export interface EventToCreate {
   league?: string;
   date: string;
 }
+
+export interface GuestSearchCriteria {
+  id?: number;
+  name?: string;
+  emailAddress?: string;
+}
+
+export interface GuestToCreate {
+  name: string;
+  emailAddress: string;
+}
+
+export interface Guest {
+  id: number;
+  name: string;
+  emailAddress: string;
+}

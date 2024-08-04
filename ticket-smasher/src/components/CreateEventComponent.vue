@@ -17,10 +17,18 @@
         hint="Liga, in der das Event stattfindet (optional)."
       />
 
-      <q-input filled v-model="eventDate" hint="Zeitpunkt, an dem das Event beginnt.">
+      <q-input
+        filled
+        v-model="eventDate"
+        hint="Zeitpunkt, an dem das Event beginnt."
+      >
         <template v-slot:prepend>
           <q-icon name="event" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-popup-proxy
+              cover
+              transition-show="scale"
+              transition-hide="scale"
+            >
               <q-date v-model="eventDate" mask="YYYY-MM-DD HH:mm">
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
@@ -32,7 +40,11 @@
 
         <template v-slot:append>
           <q-icon name="access_time" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-popup-proxy
+              cover
+              transition-show="scale"
+              transition-hide="scale"
+            >
               <q-time v-model="eventDate" mask="YYYY-MM-DD HH:mm" format24h>
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
@@ -45,7 +57,13 @@
 
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
-        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+        <q-btn
+          label="Reset"
+          type="reset"
+          color="primary"
+          flat
+          class="q-ml-sm"
+        />
       </div>
     </q-form>
   </div>
@@ -57,47 +75,48 @@ import { useQuasar, date as quasarDate } from 'quasar';
 import { EventToCreate } from './models';
 
 export default defineComponent({
+  name: 'CreateEventComponent',
   setup() {
     const $q = useQuasar();
 
     const eventName = ref<string>('');
     let eventLeague: string | undefined = undefined;
-    const eventDate = ref<string>(quasarDate.formatDate(new Date(), 'YYYY-MM-DD HH:mm'));
+    const eventDate = ref<string>(
+      quasarDate.formatDate(new Date(), 'YYYY-MM-DD HH:mm')
+    );
     const API_BASE_URL = process.env.TICKET_API_BASE_URL;
-    console.log('API_BASE_URL:', API_BASE_URL);
 
     const onSubmit = async () => {
+      const isoDate = new Date(eventDate.value.replace(' ', 'T')).toISOString();
+      const eventToCreate: EventToCreate = {
+        name: eventName.value,
+        league: eventLeague,
+        date: isoDate,
+      };
 
-        const isoDate = new Date(eventDate.value.replace(' ', 'T')).toISOString();
-        const eventToCreate: EventToCreate = {
-          name: eventName.value,
-          league: eventLeague,
-          date: isoDate
-        };
+      const response = await fetch(`${API_BASE_URL}/events`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(eventToCreate),
+      });
 
-        const response = await fetch(`${API_BASE_URL}/events`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(eventToCreate)
-        });
-
-        if (!response.ok) {
-          $q.notify({
-            color: 'red',
-            textColor: 'white',
-            icon: 'cloud_error',
-            message: `Ein Fehler ist aufgetreten: ${response.status}: ${response.statusText}`
-          });
-        }
-
+      if (!response.ok) {
         $q.notify({
-          color: 'green-4',
+          color: 'red',
           textColor: 'white',
-          icon: 'cloud_done',
-          message: 'Event angelegt!'
+          icon: 'cloud_error',
+          message: `Ein Fehler ist aufgetreten: ${response.status}: ${response.statusText}`,
         });
+      }
+
+      $q.notify({
+        color: 'green-4',
+        textColor: 'white',
+        icon: 'cloud_done',
+        message: 'Event angelegt!',
+      });
     };
 
     const onReset = () => {
@@ -111,8 +130,8 @@ export default defineComponent({
       eventDate,
       eventLeague,
       onSubmit,
-      onReset
+      onReset,
     };
-  }
+  },
 });
 </script>
