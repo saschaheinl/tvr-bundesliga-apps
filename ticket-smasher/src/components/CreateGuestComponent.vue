@@ -49,13 +49,13 @@ export default defineComponent({
 
       const guestToCreate: GuestToCreate = {
         name: guestForCreation.name,
-        emailAddress: guestForCreation.emailAddress
-      }
+        emailAddress: guestForCreation.emailAddress,
+      };
 
       const response = await fetch(`${API_BASE_URL}/guests`, {
         method: 'post',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(guestToCreate),
       });
@@ -64,7 +64,9 @@ export default defineComponent({
           color: 'red',
           textColor: 'white',
           icon: 'cloud_error',
-          message: `Ein Fehler ist aufgetreten: ${response.status}: ${JSON.stringify(response.body)}`,
+          message: `Ein Fehler ist aufgetreten: ${
+            response.status
+          }: ${JSON.stringify(response.body)}`,
         });
 
         return;

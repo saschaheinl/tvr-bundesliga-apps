@@ -11,13 +11,13 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> My Quasar App </q-toolbar-title>
+        <q-toolbar-title> TVR Ticket Smasher </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+        <q-item-label header> Navigation </q-item-label>
 
         <EssentialLink
           v-for="link in linksList"
@@ -59,10 +59,16 @@ const linksList: EssentialLinkProps[] = [
   },
   {
     title: 'Gäste',
-    caption: 'Gäste suchen und finden',
-    icon: 'guest',
+    caption: 'Gäste suchen und anlegen',
+    icon: 'people',
     link: '/guests',
   },
+  {
+    title: 'Tickets',
+    caption: 'Tickets suchen und erstellen',
+    icon: 'confirmation_number',
+    link: '/tickets'
+  }
 ];
 
 const leftDrawerOpen = ref(false);

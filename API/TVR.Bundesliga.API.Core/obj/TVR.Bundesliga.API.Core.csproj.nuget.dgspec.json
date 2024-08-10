@@ -1,0 +1,266 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Core/TVR.Bundesliga.API.Core.csproj": {}
+  },
+  "projects": {
+    "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Contracts/TVR.Bundesliga.API.Contracts.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Contracts/TVR.Bundesliga.API.Contracts.csproj",
+        "projectName": "TVR.Bundesliga.API.Contracts",
+        "projectPath": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Contracts/TVR.Bundesliga.API.Contracts.csproj",
+        "packagesPath": "/Users/sascha/.nuget/packages/",
+        "outputPath": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Contracts/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/sascha/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.201/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Core/TVR.Bundesliga.API.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Core/TVR.Bundesliga.API.Core.csproj",
+        "projectName": "TVR.Bundesliga.API.Core",
+        "projectPath": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Core/TVR.Bundesliga.API.Core.csproj",
+        "packagesPath": "/Users/sascha/.nuget/packages/",
+        "outputPath": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Core/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/sascha/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Infrastructure/TVR.Bundesliga.API.Infrastructure.csproj": {
+                "projectPath": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Infrastructure/TVR.Bundesliga.API.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational.Design": {
+              "target": "Package",
+              "version": "[1.1.6, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL.Design": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.201/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/TVR.Bundesliga.API.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/TVR.Bundesliga.API.Domain.csproj",
+        "projectName": "TVR.Bundesliga.API.Domain",
+        "projectPath": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/TVR.Bundesliga.API.Domain.csproj",
+        "packagesPath": "/Users/sascha/.nuget/packages/",
+        "outputPath": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/sascha/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Contracts/TVR.Bundesliga.API.Contracts.csproj": {
+                "projectPath": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Contracts/TVR.Bundesliga.API.Contracts.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.201/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Infrastructure/TVR.Bundesliga.API.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Infrastructure/TVR.Bundesliga.API.Infrastructure.csproj",
+        "projectName": "TVR.Bundesliga.API.Infrastructure",
+        "projectPath": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Infrastructure/TVR.Bundesliga.API.Infrastructure.csproj",
+        "packagesPath": "/Users/sascha/.nuget/packages/",
+        "outputPath": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Infrastructure/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/sascha/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/TVR.Bundesliga.API.Domain.csproj": {
+                "projectPath": "/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/TVR.Bundesliga.API.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.4.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.201/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

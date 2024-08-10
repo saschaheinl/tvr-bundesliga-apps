@@ -1,0 +1,16 @@
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/bin/Debug/net8.0/TVR.Bundesliga.API.Domain.deps.json
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/bin/Debug/net8.0/TVR.Bundesliga.API.Domain.dll
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/bin/Debug/net8.0/TVR.Bundesliga.API.Domain.pdb
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/bin/Debug/net8.0/TVR.Bundesliga.API.Contracts.dll
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/bin/Debug/net8.0/TVR.Bundesliga.API.Contracts.pdb
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/Debug/net8.0/TVR.Bundesliga.API.Domain.csproj.AssemblyReference.cache
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/Debug/net8.0/TVR.Bundesliga.API.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/Debug/net8.0/TVR.Bundesliga.API.Domain.AssemblyInfoInputs.cache
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/Debug/net8.0/TVR.Bundesliga.API.Domain.AssemblyInfo.cs
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/Debug/net8.0/TVR.Bundesliga.API.Domain.csproj.CoreCompileInputs.cache
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/Debug/net8.0/TVR.Bundesliga.API.Domain.sourcelink.json
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/Debug/net8.0/TVR.Bund.57612C42.Up2Date
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/Debug/net8.0/TVR.Bundesliga.API.Domain.dll
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/Debug/net8.0/refint/TVR.Bundesliga.API.Domain.dll
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/Debug/net8.0/TVR.Bundesliga.API.Domain.pdb
+/Users/sascha/Documents/repos/tvr-bundesliga/API/TVR.Bundesliga.API.Domain/obj/Debug/net8.0/ref/TVR.Bundesliga.API.Domain.dll

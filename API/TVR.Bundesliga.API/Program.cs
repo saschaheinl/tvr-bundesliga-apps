@@ -1,6 +1,13 @@
+using System.Reflection;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TVR.Bundesliga.API.Context;
-using TVR.Bundesliga.API.Models;
+using TVR.Bundesliga.API.Contracts.Requests;
+using TVR.Bundesliga.API.Contracts.Requests.Event;
+using TVR.Bundesliga.API.Contracts.Requests.Guest;
+using TVR.Bundesliga.API.Core.Commands;
+using TVR.Bundesliga.API.Core.Context;
+using TVR.Bundesliga.API.Core.Queries;
+using TVR.Bundesliga.API.Core.Requests;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +23,8 @@ if (string.IsNullOrEmpty(dbConnectionString))
 builder.Services.AddDbContext<EventDb>(d => d.UseNpgsql(dbConnectionString));
 builder.Services.AddDbContext<GuestDb>(d => d.UseNpgsql(dbConnectionString));
 builder.Services.AddDbContext<TicketDb>(d => d.UseNpgsql(dbConnectionString));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.Load("TVR.Bundesliga.API.Core")));
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -31,138 +40,89 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Es gibt nur ein Gas: Vollgas! Es gibt nur ein Rat: Refrath!");
 
-app.MapGet("/events", async (EventDb db) =>
-    await db.Events.ToListAsync());
+app.MapGet("/events", (IMediator mediator, CancellationToken cancellationToken) =>
+    mediator.Send(new GetAllEventsQuery(), cancellationToken));
 
-app.MapGet("/events/previous", (EventDb db) =>
+app.MapGet("/events/previous", (IMediator mediator, CancellationToken cancellationToken) =>
     {
-        var now = DateTimeOffset.UtcNow;
-        return db.Events.Where(e => e.Date < now).ToListAsync();
+        var request = new GetEventsByTimeframeQuery(DateTimeOffset.UtcNow, Timeframe.Previous);
+        return mediator.Send(request, cancellationToken);
     })
     .Produces(StatusCodes.Status200OK);
 
-app.MapGet("/events/{eventId:int}", async (int eventId, EventDb db) =>
-        await db.Events.FindAsync(eventId))
+app.MapGet("/events/{eventId:int}", (int eventId, IMediator mediator, CancellationToken cancellationToken) =>
+        {
+            var request = new GetEventByIdQuery(eventId);
+            return mediator.Send(request, cancellationToken);
+        }
+    )
     .Produces(StatusCodes.Status200OK)
     .ProducesProblem(StatusCodes.Status404NotFound);
 
-app.MapGet("/events/upcoming", (EventDb db) =>
+app.MapGet("/events/upcoming", (IMediator mediator, CancellationToken cancellationToken) =>
     {
-        var now = DateTimeOffset.UtcNow;
-        return db.Events.Where(e =>
-            e.Date >= now).ToListAsync();
+        var request = new GetEventsByTimeframeQuery(DateTimeOffset.UtcNow, Timeframe.Upcoming);
+        return mediator.Send(request, cancellationToken);
     })
     .Produces(StatusCodes.Status200OK);
 
-app.MapPost("/events", async (Event newEvent, EventDb db) =>
+app.MapPost("/events", async (CreateEventRequest request, IMediator mediator, CancellationToken cancellationToken) =>
         {
-            db.Events.Add(newEvent);
-            await db.SaveChangesAsync();
+            var command = new AddNewEventCommand(request.Name, request.League, request.Date);
+            var result = await mediator.Send(command, cancellationToken);
 
-            return Results.Created($"/events/{newEvent.Id}", newEvent);
+            return Results.Created($"/events/{result.Id}", result);
         }
     )
     .Produces(StatusCodes.Status201Created)
     .ProducesProblem(StatusCodes.Status400BadRequest);
 
-app.MapPut("/events/{eventId:int}", async (int eventId, Event eventChanges, EventDb db) =>
+app.MapPut("/events/{eventId:int}", async (int eventId, UpdateEventRequest request, IMediator mediator, CancellationToken cancellationToken) =>
     {
-        var eventToChange = await db.Events.FindAsync(eventId);
-        if (eventToChange is null)
-        {
-            return Results.NotFound();
-        }
-
-        eventToChange.Date = eventChanges.Date;
-        eventToChange.League = eventChanges.League;
-        eventToChange.Name = eventChanges.Name;
-
-        await db.SaveChangesAsync();
-
+        var command = new UpdateEventByIdCommand(eventId, request.Name, request.League, request.Date);
+        await mediator.Send(command, cancellationToken);
+        
         return Results.NoContent();
     })
-    .Produces(StatusCodes.Status200OK)
+    .Produces(StatusCodes.Status204NoContent)
     .ProducesProblem(StatusCodes.Status400BadRequest);
 
-app.MapPost("/guests", async (GuestDb db, Guest guestToCreate) =>
+app.MapPost("/guests", async (CreateGuestRequest request, IMediator mediator, CancellationToken cancellationToken) =>
 {
-    var foundGuest = await db.Guests.Where(g =>
-        g.EmailAddress == guestToCreate.EmailAddress).ToListAsync();
-    if (foundGuest.Count is not 0)
-    {
-        return Results.BadRequest("This Email address already belongs to a created guest.");
-    }
+    var command = new AddNewGuestCommand(request.Name, request.EmailAddress);
+    var result = await mediator.Send(command, cancellationToken);
 
-    db.Guests.Add(guestToCreate);
-    await db.SaveChangesAsync();
-
-    return Results.Created($"/guests/{guestToCreate.Id}", guestToCreate);
+    return Results.Created($"/guests/{result.Id}", result);
 });
 
-app.MapGet("/guests/{guestId:int}", async (GuestDb db, int guestId) =>
-    await db.Guests.FirstOrDefaultAsync(g => g.Id == guestId));
-
-app.MapGet("/guests/search", async (GuestDb db, int? id, string? name, string? mailAddress) =>
+app.MapGet("/guests/{guestId:int}", (int guestId, IMediator mediator, CancellationToken cancellationToken) =>
 {
-    if(id is null && name is null && mailAddress is null)
-    {
-        return [];
-    }
-    
-    if (id is not null)
-    {
-        return await db.Guests.Where(g => g.Id == id).ToListAsync();
-    }
-
-    if (name is not null && mailAddress is not null)
-    {
-        return await db.Guests.Where(g => g.EmailAddress.Contains(mailAddress) && g.Name.Contains(name)).ToListAsync();
-    }
-
-    if (name is null && mailAddress is not null)
-    {
-        return await db.Guests.Where(g => g.EmailAddress.Contains(mailAddress)).ToListAsync();
-    }
-
-    return await db.Guests.Where(g => g.Name.Contains(name!)).ToListAsync();
+    var query = new GetGuestByIdQuery(guestId);
+    return mediator.Send(query, cancellationToken);
 });
 
-app.MapGet("guests/emailId={mailAddress}", async (GuestDb db, string mailAddress) =>
-    await db.Guests.FirstOrDefaultAsync(g => g.EmailAddress == mailAddress));
-
-app.MapGet("guests/name={name}", async (GuestDb db, string name) =>
-    await db.Guests.Where(g => g.Name.Contains(name)).ToListAsync());
-
-app.MapGet("/guests", async (GuestDb db) =>
-    await db.Guests.ToListAsync());
-
-app.MapPost("/tickets", async (TicketDb tickets, EventDb events, GuestDb guests, Ticket newTicket) =>
+app.MapGet("/guests/search", async (int? id, string? name, string? mailAddress, IMediator mediator, CancellationToken cancellationToken) =>
 {
-    var existingGuest = await guests.Guests.FindAsync(newTicket.Guest.EmailAddress);
-    if (existingGuest is not null)
-    {
-        newTicket.Guest = existingGuest;
-    }
+    var query = new SearchGuestQuery(id, name, mailAddress);
+    var result = await mediator.Send(query, cancellationToken);
 
-    var existingEvent = await events.Events.FindAsync(newTicket.Event);
-    if (existingEvent is not null)
-    {
-        newTicket.Event.Id = existingEvent.Id;
-    }
-
-    var existingTicket =
-        await tickets.Tickets.Where(t => t.Event.Id == newTicket.Event.Id && t.Guest.Id == newTicket.Guest.Id)
-            .ToListAsync();
-    if (existingTicket.Count is not 0)
-    {
-        return Results.Conflict("This ticket already exists.");
-    }
-
-    tickets.Add(newTicket);
-    await tickets.SaveChangesAsync();
-
-    return Results.Created($"/tickets/{newTicket.Id}", newTicket);
+    return result;
 });
+
+app.MapGet("/guests", (IMediator mediator, CancellationToken cancellationToken) =>
+    mediator.Send(new GetAllGuestsQuery(), cancellationToken));
+
+app.MapPost("/tickets", async (CreateTicketRequest request, IMediator mediator, CancellationToken cancellationToken) =>
+    {
+        var query = new AddNewTicketCommand(request.EventId, request.Type, request.GuestId, request.IncludedVisits,
+            request.Price);
+        var ticketToAdd = await mediator.Send(query, cancellationToken);
+
+        return Results.Created($"/tickets/{ticketToAdd.Id}", ticketToAdd);
+    })
+    .Produces(StatusCodes.Status201Created)
+    .Produces(StatusCodes.Status400BadRequest)
+    .Produces(StatusCodes.Status409Conflict);
 
 if (app.Environment.IsDevelopment())
 {

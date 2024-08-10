@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "TVR.Bundesliga.API.Domain/1.0.0": {
+        "dependencies": {
+          "TVR.Bundesliga.API.Contracts": "1.0.0"
+        },
+        "runtime": {
+          "TVR.Bundesliga.API.Domain.dll": {}
+        }
+      },
+      "TVR.Bundesliga.API.Contracts/1.0.0": {
+        "runtime": {
+          "TVR.Bundesliga.API.Contracts.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TVR.Bundesliga.API.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TVR.Bundesliga.API.Contracts/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
