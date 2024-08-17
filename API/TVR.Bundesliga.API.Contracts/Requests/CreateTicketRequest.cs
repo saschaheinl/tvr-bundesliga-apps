@@ -2,11 +2,10 @@ namespace TVR.Bundesliga.API.Contracts.Requests;
 
 public class CreateTicketRequest(
     int? eventId,
-    CreateTicketRequest.TicketType type,
+    CreateTicketRequest.CreationTicketType type,
     int guestId,
     int includedVisits,
-    decimal? price,
-    int remainingVisits)
+    decimal? price)
 {
     /// <summary>
     /// ID of the event the ticket is valid for
@@ -16,7 +15,7 @@ public class CreateTicketRequest(
     /// <summary>
     /// Type of the ticket
     /// </summary>
-    public TicketType Type { get; set; } = type;
+    public CreationTicketType Type { get; set; } = type;
 
     /// <summary>
     /// ID of the Guest of that ticket
@@ -33,7 +32,7 @@ public class CreateTicketRequest(
     /// </summary>
     public decimal? Price { get; set; } = price;
 
-    public enum TicketType
+    public enum CreationTicketType
     {
         Free,
         Season,

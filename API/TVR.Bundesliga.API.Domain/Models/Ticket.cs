@@ -12,8 +12,6 @@ public class Ticket
     public Event? Event { get; set; }
     public Guest Guest { get; set; }
     
-    public Ticket() { }
-    
     public Ticket(Event? @event, TicketType type, int includedVisits, Guest guest, decimal? price, int remainingVisits)
     {
         Event = @event;

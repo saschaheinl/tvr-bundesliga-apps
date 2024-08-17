@@ -124,6 +124,13 @@ app.MapPost("/tickets", async (CreateTicketRequest request, IMediator mediator, 
     .Produces(StatusCodes.Status400BadRequest)
     .Produces(StatusCodes.Status409Conflict);
 
+app.MapGet("/tickets/{ticketId:int}", (int ticketId, IMediator mediator, CancellationToken cancellationToken) =>
+{
+    var query = new GetTicketByIdQuery(ticketId);
+
+    return mediator.Send(query, cancellationToken);
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

@@ -35,8 +35,8 @@ public class AddNewTicketUseCase(TicketDb ticketContext, EventDb eventContext, G
 
         var ticketType = request.Type switch
         {
-            CreateTicketRequest.TicketType.Free => TicketType.Free,
-            CreateTicketRequest.TicketType.Season => TicketType.Season,
+            CreateTicketRequest.CreationTicketType.Free => TicketType.Free,
+            CreateTicketRequest.CreationTicketType.Season => TicketType.Season,
             _ => TicketType.Single
         };
 

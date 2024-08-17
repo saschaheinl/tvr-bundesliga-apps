@@ -6,7 +6,7 @@ namespace TVR.Bundesliga.API.Core.Commands;
 
 public record AddNewTicketCommand(
     int? EventId,
-    CreateTicketRequest.TicketType Type,
+    CreateTicketRequest.CreationTicketType Type,
     int GuestId,
     int IncludedVisits,
     decimal? Price) : IRequest<Ticket>;

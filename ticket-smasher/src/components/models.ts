@@ -14,7 +14,7 @@ export interface Event {
   date: string;
 }
 
-export interface EventToCreate {
+export interface EventForCreation {
   name: string;
   league?: string;
   date: string;
@@ -35,4 +35,28 @@ export interface Guest {
   id: number;
   name: string;
   emailAddress: string;
+}
+
+export enum TicketType {
+  Freikarte,
+  Dauerkarte,
+  Einzelkarte,
+}
+
+export interface TicketForCreation {
+  eventId?: number;
+  type: TicketType;
+  guestId: number;
+  includedVisits: number;
+  price?: number;
+}
+
+export interface Ticket {
+  id: number;
+  type: TicketType;
+  includedVisits: number;
+  remainingVisits: number;
+  price?: number;
+  event: Event;
+  guest: Guest;
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TVR.Bundesliga.API.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5efef2875cb072ae079f6237186f502b5dcd4fa6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cce060b46d164100df5ff3e3812be83289c25db6")]
 [assembly: System.Reflection.AssemblyProductAttribute("TVR.Bundesliga.API.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TVR.Bundesliga.API.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

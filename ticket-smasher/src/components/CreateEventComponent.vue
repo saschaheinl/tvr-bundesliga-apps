@@ -72,7 +72,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useQuasar, date as quasarDate } from 'quasar';
-import { EventToCreate } from './models';
+import { EventForCreation } from './models';
 
 export default defineComponent({
   name: 'CreateEventComponent',
@@ -88,7 +88,7 @@ export default defineComponent({
 
     const onSubmit = async () => {
       const isoDate = new Date(eventDate.value.replace(' ', 'T')).toISOString();
-      const eventToCreate: EventToCreate = {
+      const eventToCreate: EventForCreation = {
         name: eventName.value,
         league: eventLeague,
         date: isoDate,

@@ -8,16 +8,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { TvrTicketApiClient } from 'components/tvrTicketApiClient';
 
 const rat = ref('');
+const apiClient = new TvrTicketApiClient(process.env.TICKET_API_BASE_URL ?? '');
 
-const fetchRat = async () => {
-  const apiUrl = process.env.TICKET_API_BASE_URL;
-  const response = await fetch(`${apiUrl}`);
-  rat.value = await response.text();
-};
-
-onMounted(() => {
-  fetchRat();
+onMounted(async () => {
+  rat.value = await apiClient.getRath();
 });
 </script>

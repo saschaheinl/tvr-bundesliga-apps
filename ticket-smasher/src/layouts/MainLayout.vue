@@ -67,8 +67,8 @@ const linksList: EssentialLinkProps[] = [
     title: 'Tickets',
     caption: 'Tickets suchen und erstellen',
     icon: 'confirmation_number',
-    link: '/tickets'
-  }
+    link: '/tickets',
+  },
 ];
 
 const leftDrawerOpen = ref(false);
