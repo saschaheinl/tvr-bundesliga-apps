@@ -1,6 +1,8 @@
 using System.Reflection;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TVR.Bundesliga.API.Contracts.Requests;
 using TVR.Bundesliga.API.Contracts.Requests.Event;
 using TVR.Bundesliga.API.Contracts.Requests.Guest;
@@ -36,12 +38,29 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = $"https://securetoken.google.com/{Environment.GetEnvironmentVariable("GOOGLE_PROJECT_NAME")}";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = $"https://securetoken.google.com/{Environment.GetEnvironmentVariable("GOOGLE_PROJECT_NAME")}",
+            ValidateAudience = true,
+            ValidAudience = Environment.GetEnvironmentVariable("GOOGLE_PROJECT_NAME"),
+            ValidateLifetime = true
+        };
+    });
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapGet("/", () => "Es gibt nur ein Gas: Vollgas! Es gibt nur ein Rat: Refrath!");
 
 app.MapGet("/events", (IMediator mediator, CancellationToken cancellationToken) =>
-    mediator.Send(new GetAllEventsQuery(), cancellationToken));
+    mediator.Send(new GetAllEventsQuery(), cancellationToken)).RequireAuthorization();
 
 app.MapGet("/events/previous", (IMediator mediator, CancellationToken cancellationToken) =>
     {
