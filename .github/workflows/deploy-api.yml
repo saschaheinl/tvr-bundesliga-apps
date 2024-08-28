@@ -1,0 +1,53 @@
+name: Deploy .NET API to Google Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Build the .NET project
+        run: |
+          dotnet publish ./API -c Release -o ./out
+
+      - name: Build Docker image
+        run: |
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/api:latest ./API
+
+      - name: Push Docker image to Google Container Registry
+        run: |
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/api:latest
+
+      - name: Deploy to Google Cloud Run
+        run: |
+          gcloud run deploy api \
+          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/api:latest \
+          --platform managed \
+          --region us-central1 \
+          --allow-unauthenticated \
+          --set-env-vars ASPNETCORE_ENVIRONMENT=${{ secrets.ASPNETCORE_ENVIRONMENT }},\
+          POSTGRESQL_CONNECTION_STRING=${{ secrets.POSTGRESQL_CONNECTION_STRING }},\
+          GOOGLE_PROJECT_NAME=${{ secrets.GOOGLE_PROJECT_NAME }}
