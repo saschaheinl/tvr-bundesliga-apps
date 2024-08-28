@@ -31,11 +31,11 @@ jobs:
 
       - name: Build the .NET project
         run: |
-          dotnet publish ./API -c Release -o ./out
+          dotnet publish ./API/TVR.Bundesliga.API -c Release -o ./out
 
       - name: Build Docker image
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/api:latest ./API
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/api:latest -f ./API/TVR.Bundesliga.API/Dockerfile ./API
 
       - name: Push Docker image to Google Container Registry
         run: |
