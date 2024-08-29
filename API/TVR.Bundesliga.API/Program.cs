@@ -23,6 +23,8 @@ if (string.IsNullOrEmpty(dbConnectionString))
     throw new ArgumentException("Critical environment variable is missing.");
 }
 
+Console.WriteLine($"The Google Project is ${Environment.GetEnvironmentVariable("GOOGLE_PROJECT_NAME")}");
+
 builder.Services.AddDbContext<EventDb>(d => d.UseNpgsql(dbConnectionString));
 builder.Services.AddDbContext<GuestDb>(d => d.UseNpgsql(dbConnectionString));
 builder.Services.AddDbContext<TicketDb>(d => d.UseNpgsql(dbConnectionString));
