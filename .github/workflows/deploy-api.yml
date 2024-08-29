@@ -52,6 +52,7 @@ jobs:
           --platform managed \
           --region europe-west1  \
           --allow-unauthenticated \
-          --set-env-vars ASPNETCORE_ENVIRONMENT=${{ secrets.ASPNETCORE_ENVIRONMENT }},\
-          POSTGRESQL_CONNECTION_STRING=${{ secrets.POSTGRESQL_CONNECTION_STRING }}\
-          GOOGLE_PROJECT_NAME=${{ secrets.GOOGLE_PROJECT_NAME }}
+          --set-env-vars ASPNETCORE_ENVIRONMENT="${{ secrets.ASPNETCORE_ENVIRONMENT }}",\
+          GOOGLE_PROJECT_NAME="${{ secrets.GOOGLE_PROJECT_NAME }}",
+          POSTGRESQL_CONNECTION_STRING="${{ secrets.POSTGRESQL_CONNECTION_STRING }}"\
+          
