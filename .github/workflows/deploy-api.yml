@@ -53,6 +53,7 @@ jobs:
           --region europe-west1  \
           --allow-unauthenticated \
           --set-env-vars ASPNETCORE_ENVIRONMENT=${{ secrets.ASPNETCORE_ENVIRONMENT }},\
-          POSTGRESQL_CONNECTION_STRING="Server=/cloudsql/${{ secrets.CLOUD_SQL_CONNECTION_NAME }};Database={{ secrets.DB_NAME }};User Id={{ secrets.DB_USER }};Password=${{ secrets.DB_PASSWORD }};" \
+          POSTGRESQL_CONNECTION_STRING="Server=/cloudsql/${{ secrets.CLOUD_SQL_CONNECTION_NAME }};Database={{ secrets.DB_NAME }};User Id={{ secrets.DB_USER }};Password=${{ secrets.DB_PASSWORD }};",
+          GOOGLE_PROJECT_NAME={{ secrets.GOOGLE_PROJECT_NAME }} \
           --add-cloudsql-instances ${{ secrets.CLOUD_SQL_CONNECTION_NAME }}
 
