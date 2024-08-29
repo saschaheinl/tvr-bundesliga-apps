@@ -17,7 +17,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: "8.0.x"
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -52,7 +52,6 @@ jobs:
           --platform managed \
           --region europe-west1  \
           --allow-unauthenticated \
-          --set-env-vars ASPNETCORE_ENVIRONMENT="${{ secrets.ASPNETCORE_ENVIRONMENT }}",\
-          GOOGLE_PROJECT_NAME="${{ secrets.GOOGLE_PROJECT_NAME }}",
-          POSTGRESQL_CONNECTION_STRING="${{ secrets.POSTGRESQL_CONNECTION_STRING }}"\
-          
+          --set-env-vars ASPNETCORE_ENVIRONMENT=${{ secrets.ASPNETCORE_ENVIRONMENT }},\
+          POSTGRESQL_CONNECTION_STRING="${{ secrets.POSTGRESQL_CONNECTION_STRING }}",\
+          GOOGLE_PROJECT_NAME=${{ secrets.GOOGLE_PROJECT_NAME }}
