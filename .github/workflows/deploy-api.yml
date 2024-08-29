@@ -54,4 +54,5 @@ jobs:
           --allow-unauthenticated \
           --set-env-vars ASPNETCORE_ENVIRONMENT=${{ secrets.ASPNETCORE_ENVIRONMENT }},\
           POSTGRESQL_CONNECTION_STRING="${{ secrets.POSTGRESQL_CONNECTION_STRING }}",\
-          GOOGLE_PROJECT_NAME=${{ secrets.GOOGLE_PROJECT_NAME }}
+          GOOGLE_PROJECT_NAME=${{ secrets.GOOGLE_PROJECT_NAME }}\
+          --add-cloudsql-instances tvr-ticket-api:europe-west1:tvr-tickets
