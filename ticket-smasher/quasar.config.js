@@ -6,23 +6,12 @@
  */
 
 const { configure } = require('quasar/wrappers');
-const { existsSync } = require('fs');
-const { config: dotenvConfig } = require('dotenv');
 
 module.exports = configure(function (ctx) {
-  if (ctx.dev) {
-    if (existsSync('local.env')) {
-      dotenvConfig({ path: 'local.env' });
-    } else {
-      dotenvConfig({ path: '.env.local' });
-    }
-  } else if (ctx.prod) {
-    dotenvConfig({ path: '.env.prod' });
-  }
-  
-  dotenvConfig({ path: envFilePath });
+  // No need to use dotenvConfig here as Docker will provide the environment variables
 
-  console.log(ctx);
+  console.log('Running in', ctx.dev ? 'development' : 'production', 'mode');
+
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
