@@ -19,6 +19,8 @@ module.exports = configure(function (ctx) {
   } else if (ctx.prod) {
     dotenvConfig({ path: '.env.prod' });
   }
+  
+  dotenvConfig({ path: envFilePath });
 
   console.log(ctx);
   return {
