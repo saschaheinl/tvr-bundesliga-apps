@@ -35,7 +35,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/quasar-app:latest -f ./smasher/Dockerfile ./smasher
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/quasar-app:latest -f ./ticket-smasher/Dockerfile ./ticket-smasher
 
       - name: Push Docker image to Google Container Registry
         run: |
