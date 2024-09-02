@@ -100,7 +100,7 @@ module.exports = configure(function (ctx) {
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
     ssr: {
-      prodPort: 3000, // The default port that the production server should use
+      prodPort: process.env.PORT || 8080, // The default port that the production server should use
 
       middlewares: [
         'render', // keep this as last one
