@@ -16,6 +16,7 @@
     "@quasar/extras": "^1.16.4",
     "axios": "^1.7.4",
     "dotenv": "^16.4.5",
+    "firebase": "^10.13.1",
     "qrcode": "^1.5.4",
     "quasar": "^2.16.0",
     "superagent": "^9.0.2",

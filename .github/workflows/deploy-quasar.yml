@@ -1,0 +1,53 @@
+name: Deploy Quasar App to Google Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Configure Docker to use gcloud as a credential helper
+        run: |
+          gcloud auth configure-docker
+
+      - name: Build Docker image
+        run: |
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/quasar-app:latest -f ./smasher/Dockerfile ./smasher
+
+      - name: Push Docker image to Google Container Registry
+        run: |
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/quasar-app:latest
+
+      - name: Deploy to Google Cloud Run
+        run: |
+          gcloud run deploy quasar-app \
+          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/quasar-app:latest \
+          --platform managed \
+          --region europe-west1 \
+          --allow-unauthenticated \
+          --set-env-vars TICKET_API_BASE_URL=${{ secrets.TICKET_API_BASE_URL }},\
+          FIREBASE_AUTH_KEY=${{ secrets.FIREBASE_AUTH_KEY }},\
+          FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}
