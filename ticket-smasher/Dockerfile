@@ -5,13 +5,15 @@ WORKDIR /app
 # Copy .env file to the container
 COPY .env .env
 
-# Copy package.json and install dependencies
+# Install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy all other files and run the build
+# Copy all other files
 COPY . .
-RUN npm run build
+
+# Load the environment variables and run the build
+RUN export $(cat .env | xargs) && npm run build
 
 # Stage 2: Serve the app using Nginx
 FROM nginx:stable-alpine as production-stage
