@@ -2,7 +2,7 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 
-# Copy .env file to the container
+# Copy the .env file to the container
 COPY .env .env
 
 # Install dependencies
@@ -12,8 +12,8 @@ RUN npm install
 # Copy all other files
 COPY . .
 
-# Load the environment variables and run the build
-RUN export $(cat .env | xargs) && npm run build
+# Ensure that the environment variables are loaded and available
+RUN echo "Environment Variables:" && cat .env && export $(cat .env | xargs) && env && npm run build
 
 # Stage 2: Serve the app using Nginx
 FROM nginx:stable-alpine as production-stage
