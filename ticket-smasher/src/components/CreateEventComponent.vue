@@ -84,7 +84,7 @@ export default defineComponent({
     const eventDate = ref<string>(
       quasarDate.formatDate(new Date(), 'YYYY-MM-DD HH:mm')
     );
-    const API_BASE_URL = process.env.TICKET_API_BASE_URL;
+    const API_BASE_URL = process.env.VUE_APP_TICKET_API_BASE_URL;
 
     const onSubmit = async () => {
       const isoDate = new Date(eventDate.value.replace(' ', 'T')).toISOString();

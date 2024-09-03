@@ -29,6 +29,12 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
+      - name: Create .env file
+        run: |
+          echo "TICKET_API_BASE_URL=${{ secrets.TICKET_API_BASE_URL }}" >> ./ticket-smasher/.env
+          echo "FIREBASE_AUTH_KEY=${{ secrets.FIREBASE_AUTH_KEY }}" >> ./ticket-smasher/.env
+          echo "FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}" >> ./ticket-smasher/.env
+
       - name: Configure Docker to use gcloud as a credential helper
         run: |
           gcloud auth configure-docker
@@ -47,7 +53,4 @@ jobs:
           --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/quasar-app:latest \
           --platform managed \
           --region europe-west1 \
-          --allow-unauthenticated \
-          --set-env-vars TICKET_API_BASE_URL=${{ secrets.TICKET_API_BASE_URL }},\
-          FIREBASE_AUTH_KEY=${{ secrets.FIREBASE_AUTH_KEY }},\
-          FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }}
+          --allow-unauthenticated

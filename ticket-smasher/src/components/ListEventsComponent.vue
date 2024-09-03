@@ -109,7 +109,7 @@ export default defineComponent({
       },
     ]);
 
-    const API_BASE_URL = process.env.TICKET_API_BASE_URL;
+    const API_BASE_URL = process.env.VUE_APP_TICKET_API_BASE_URL;
 
     function formatDate(date: string) {
       const eventDate = new Date(date);

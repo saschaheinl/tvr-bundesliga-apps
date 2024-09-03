@@ -38,11 +38,7 @@ module.exports = configure(function (ctx) {
       },
 
       vueRouterMode: 'hash', // available values: 'hash', 'history'
-      env: {
-        TICKET_API_BASE_URL: process.env.TICKET_API_BASE_URL,
-        FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
-        FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN
-      },
+      env: require('dotenv').config().parsed,
 
       vitePlugins: [
         [

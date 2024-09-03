@@ -27,8 +27,8 @@ export class TvrTicketApiClient {
     });
 
     this.firebaseConfig = {
-      apiKey: process.env.FIREBASE_API_KEY ?? '',
-      authDomain: process.env.FIREBASE_AUTH_DOMAIN ?? '',
+      apiKey: process.env.VUE_APP_FIREBASE_API_KEY ?? '',
+      authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN ?? '',
     };
 
     this.app = initializeApp(this.firebaseConfig);

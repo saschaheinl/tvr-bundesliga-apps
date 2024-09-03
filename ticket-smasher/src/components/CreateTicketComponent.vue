@@ -65,7 +65,7 @@ export default defineComponent({
   name: 'CreateTicketComponent',
   setup() {
     const $q = useQuasar();
-    const API_BASE_URL = process.env.TICKET_API_BASE_URL;
+    const API_BASE_URL = process.env.VUE_APP_TICKET_API_BASE_URL;
 
     const ticketTypeOptions = [
       { label: 'Freikarte', value: TicketType.Freikarte },

@@ -11,7 +11,7 @@ import { ref, onMounted } from 'vue';
 import { TvrTicketApiClient } from 'components/tvrTicketApiClient';
 
 const rat = ref('');
-const apiClient = new TvrTicketApiClient(process.env.TICKET_API_BASE_URL ?? '');
+const apiClient = new TvrTicketApiClient(process.env.VUE_APP_TICKET_API_BASE_URL ?? '');
 
 onMounted(async () => {
   rat.value = await apiClient.getRath();
