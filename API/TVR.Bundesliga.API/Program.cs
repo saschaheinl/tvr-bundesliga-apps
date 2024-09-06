@@ -43,7 +43,10 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins("https://localhost:9000", "https://smasher.tvr.saschahei.nl")
-                .SetIsOriginAllowedToAllowWildcardSubdomains();
+                .SetIsOriginAllowedToAllowWildcardSubdomains()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(_ => true);
         });
 });
 
@@ -155,7 +158,7 @@ app.MapGet("/guests/search",
     .RequireAuthorization();
 
 app.MapGet("/guests", (IMediator mediator, CancellationToken cancellationToken) =>
-    mediator.Send(new GetAllGuestsQuery(), cancellationToken))
+        mediator.Send(new GetAllGuestsQuery(), cancellationToken))
     .Produces<Guest>()
     .ProducesProblem(StatusCodes.Status400BadRequest)
     .RequireAuthorization();
