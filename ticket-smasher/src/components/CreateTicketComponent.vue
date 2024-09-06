@@ -58,14 +58,15 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useQuasar } from 'quasar';
-import { TicketForCreation, TicketType } from './models';
+import { Ticket, TicketForCreation, TicketType } from './models';
 import QRCode from 'qrcode';
+import { TvrTicketApiClient } from 'components/tvrTicketApiClient';
 
 export default defineComponent({
   name: 'CreateTicketComponent',
   setup() {
     const $q = useQuasar();
-    const API_BASE_URL = process.env.VUE_APP_TICKET_API_BASE_URL;
+    const apiClient = new TvrTicketApiClient(process.env.VUE_APP_TICKET_API_BASE_URL ?? '');
 
     const ticketTypeOptions = [
       { label: 'Freikarte', value: TicketType.Freikarte },
@@ -83,41 +84,30 @@ export default defineComponent({
 
     const showQRCodeModal = ref(false);
     const qrCodeUrl = ref<string>('');
+    let ticket = {} as Ticket;
 
     async function onSubmit() {
       console.log(ticketForCreation.value);
-      const response = await fetch(`${API_BASE_URL}/tickets`, {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(ticketForCreation.value),
-      });
-
-      if (!response.ok) {
+      try {
+        ticket = await apiClient.createNewTicket(ticketForCreation.value);
+        $q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Ticket erfolgreich erstellt!',
+        });
+      } catch (e) {
+        console.error(e);
         $q.notify({
           color: 'red',
           textColor: 'white',
           icon: 'cloud_error',
-          message: `Ein Fehler ist aufgetreten: ${
-            response.status
-          }: ${JSON.stringify(await response.text())}`,
+          message: 'Ein Fehler ist aufgetreten!'
         });
-
-        return;
       }
 
-      const responseData = await response.json();
-
-      $q.notify({
-        color: 'green-4',
-        textColor: 'white',
-        icon: 'cloud_done',
-        message: 'Ticket erfolgreich erstellt!',
-      });
-
       // Generate the QR Code
-      qrCodeUrl.value = await QRCode.toDataURL(responseData.id);
+      qrCodeUrl.value = await QRCode.toDataURL(ticket.id.toString());
 
       // Open the modal
       showQRCodeModal.value = true;

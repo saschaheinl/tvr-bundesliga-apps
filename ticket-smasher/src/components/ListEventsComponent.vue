@@ -20,7 +20,7 @@
           <div class="text-h6">Upcoming Events</div>
           <q-btn
             color="primary"
-            @click="fetchAllEvents()"
+            @click="fetchAllEvents"
             round
             icon="refresh"
           />
@@ -72,10 +72,12 @@
 import { defineComponent, ref, onMounted } from 'vue';
 import { Event } from './models';
 import { QTableColumn } from 'quasar';
+import { TvrTicketApiClient } from 'components/tvrTicketApiClient';
 
 export default defineComponent({
   methods: { onMounted },
   setup() {
+    const apiClient = new TvrTicketApiClient(process.env.VUE_APP_TICKET_API_BASE_URL ?? '');
     const tab = ref('upcoming');
     const upcomingEvents = ref<Event[]>([]);
     const previousEvents = ref<Event[]>([]);
@@ -109,8 +111,6 @@ export default defineComponent({
       },
     ]);
 
-    const API_BASE_URL = process.env.VUE_APP_TICKET_API_BASE_URL;
-
     function formatDate(date: string) {
       const eventDate = new Date(date);
       return `${eventDate.toLocaleDateString('de-DE', {
@@ -125,25 +125,18 @@ export default defineComponent({
     }
 
     async function fetchAllEvents() {
-      const upcomingResponse = await fetch(`${API_BASE_URL}/events/upcoming`);
-      const previousResponse = await fetch(`${API_BASE_URL}/events/previous`);
-      const allEventsResponse = await fetch(`${API_BASE_URL}/events`);
-
-      if (
-        !upcomingResponse.ok ||
-        !previousResponse.ok ||
-        !allEventsResponse.ok
-      ) {
-        throw new Error('Failed to fetch events.');
+      console.log('fetchAllEvents called.');
+      try {
+        upcomingEvents.value = await apiClient.getUpcomingEvents();
+        previousEvents.value = await apiClient.getPreviousEvents();
+        allEvents.value = await apiClient.getAllEvents();
+      } catch (err) {
+        throw err;
       }
-
-      upcomingEvents.value = await upcomingResponse.json();
-      previousEvents.value = await previousResponse.json();
-      allEvents.value = await allEventsResponse.json();
     }
 
     onMounted(() => {
-      fetchAllEvents();
+      void fetchAllEvents();
     });
 
     return {
@@ -157,7 +150,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-/* Your styles here */
-</style>

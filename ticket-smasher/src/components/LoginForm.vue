@@ -51,7 +51,7 @@
 import { defineComponent, ref } from 'vue';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { useQuasar } from 'quasar';
+import { SessionStorage, useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -74,8 +74,8 @@ export default defineComponent({
 
     const login = () => {
       const encodedPassword = btoa(password.value);
-      window.sessionStorage.setItem('email', email.value);
-      window.sessionStorage.setItem('password', encodedPassword);
+      SessionStorage.set('userMailAddress', email.value);
+      SessionStorage.set('password', encodedPassword);
 
       let app;
       if (!getApps().length) {

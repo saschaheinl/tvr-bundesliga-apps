@@ -50,63 +50,61 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Space between form/table and the container edges */
+  gap: 1rem;
 }
 
 .main-content {
   display: flex;
-  gap: 1rem; /* Space between form and table */
+  gap: 1rem;
 }
 
 .form-container {
   flex: 1;
-  max-width: 600px; /* Set a max-width for the form container */
+  max-width: 600px;
 }
 
 .form {
   display: flex;
-  flex-direction: column; /* Stack form fields vertically */
+  flex-direction: column;
 }
 
 .form-fields {
   display: flex;
-  flex-direction: column; /* Ensure form fields stack vertically */
+  flex-direction: column;
 }
 
 .form-fields > * {
-  margin-bottom: 1rem; /* Default space between form fields */
+  margin-bottom: 1rem;
 }
 
 .form-fields > *:last-of-type {
-  margin-bottom: 2rem; /* Double space after the last input */
+  margin-bottom: 2rem;
 }
 
 .submit-button {
   display: flex;
-  justify-content: center; /* Center the button horizontally */
+  justify-content: center;
 }
 
 .table-container {
-  flex: 2; /* Allow table container to take more space */
-  overflow: auto; /* Add scroll if needed */
+  flex: 2;
+  overflow: auto;
 }
 </style>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 import { Guest, GuestSearchCriteria } from 'components/models';
-import superagent from 'superagent';
 import { QTableColumn } from 'quasar';
+import { TvrTicketApiClient } from 'components/tvrTicketApiClient';
 
 export default defineComponent({
   setup() {
     const searchCriteria = reactive<GuestSearchCriteria>({
       id: undefined,
       name: undefined,
-      emailAddress: undefined,
+      emailAddress: undefined
     });
-
     const foundGuests = ref<Guest[]>([]);
-
     const columns = ref<QTableColumn<Guest>[]>([
       {
         name: 'id',
@@ -114,41 +112,34 @@ export default defineComponent({
         align: 'left',
         field: (row) => row.id.toString(),
         sortable: true,
-        sortOrder: 'ad',
+        sortOrder: 'ad'
       },
       {
         name: 'name',
         label: 'Name',
         align: 'left',
         field: (row) => row.name,
-        sortable: true,
+        sortable: true
       },
       {
         name: 'mail',
         label: 'E-Mail Adresse',
         align: 'left',
         field: (row) => row.emailAddress,
-        sortable: true,
-      },
+        sortable: true
+      }
     ]);
-
-    const API_BASE_URL = process.env.VUE_APP_TICKET_API_BASE_URL;
+    const apiClient = new TvrTicketApiClient(process.env.VUE_APP_TICKET_API_BASE_URL ?? '');
 
     async function onSubmit() {
       try {
-        const response = await superagent
-          .get(`${API_BASE_URL}/guests/search`)
-          .query({ id: searchCriteria.id })
-          .query({ name: searchCriteria.name })
-          .query({ mailAddress: searchCriteria.emailAddress });
-
-        foundGuests.value = response.body;
+        foundGuests.value = await apiClient.searchGuests(searchCriteria.id, searchCriteria.name, searchCriteria.emailAddress);
       } catch (e) {
         console.error(e);
       }
     }
 
     return { onSubmit, searchCriteria, foundGuests, columns };
-  },
+  }
 });
 </script>

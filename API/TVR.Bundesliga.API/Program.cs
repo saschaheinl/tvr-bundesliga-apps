@@ -39,6 +39,12 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         });
+    options.AddPolicy("Allow Ticket Smasher",
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:9000", "https://smasher.tvr.saschahei.nl")
+                .SetIsOriginAllowedToAllowWildcardSubdomains();
+        });
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -182,6 +188,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseCors("AllowAll");
+}
+
+if (app.Environment.IsProduction())
+{
+    app.UseCors("Allow Ticket Smasher");
 }
 
 app.Run();

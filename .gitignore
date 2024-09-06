@@ -487,6 +487,10 @@ ASALocalRun/
 
 # NVidia Nsight GPU debugger configuration file
 *.nvuser
+API/TVR.Bundesliga.API/obj
+API/TVR.Bundesliga.API.Contracts/obj
+API/TVR.Bundesliga.API.Core/obj
+API/TVR.Bundesliga.API/obj
 
 # MFractors (Xamarin productivity tool) working folder
 .mfractor/

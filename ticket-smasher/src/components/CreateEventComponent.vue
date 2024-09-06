@@ -73,50 +73,44 @@
 import { defineComponent, ref } from 'vue';
 import { useQuasar, date as quasarDate } from 'quasar';
 import { EventForCreation } from './models';
+import { TvrTicketApiClient } from 'components/tvrTicketApiClient';
 
 export default defineComponent({
   name: 'CreateEventComponent',
   setup() {
     const $q = useQuasar();
-
     const eventName = ref<string>('');
     let eventLeague: string | undefined = undefined;
     const eventDate = ref<string>(
       quasarDate.formatDate(new Date(), 'YYYY-MM-DD HH:mm')
     );
-    const API_BASE_URL = process.env.VUE_APP_TICKET_API_BASE_URL;
+    const apiClient = new TvrTicketApiClient(process.env.VUE_APP_TICKET_API_BASE_URL ?? '');
 
     const onSubmit = async () => {
       const isoDate = new Date(eventDate.value.replace(' ', 'T')).toISOString();
       const eventToCreate: EventForCreation = {
         name: eventName.value,
         league: eventLeague,
-        date: isoDate,
+        date: isoDate
       };
 
-      const response = await fetch(`${API_BASE_URL}/events`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(eventToCreate),
-      });
-
-      if (!response.ok) {
+      try {
+        await apiClient.createNewEvent(eventToCreate);
+        $q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Event angelegt!'
+        });
+      } catch (e) {
+        console.error(e);
         $q.notify({
           color: 'red',
           textColor: 'white',
           icon: 'cloud_error',
-          message: `Ein Fehler ist aufgetreten: ${response.status}: ${response.statusText}`,
+          message: 'Ein Fehler ist aufgetreten!'
         });
       }
-
-      $q.notify({
-        color: 'green-4',
-        textColor: 'white',
-        icon: 'cloud_done',
-        message: 'Event angelegt!',
-      });
     };
 
     const onReset = () => {
@@ -130,8 +124,8 @@ export default defineComponent({
       eventDate,
       eventLeague,
       onSubmit,
-      onReset,
+      onReset
     };
-  },
+  }
 });
 </script>

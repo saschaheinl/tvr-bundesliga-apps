@@ -9,14 +9,13 @@ import {
 } from 'components/models';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, User } from 'firebase/auth';
-import { useQuasar } from 'quasar';
+import { SessionStorage } from 'quasar';
 
 export class TvrTicketApiClient {
   private readonly apiClient: AxiosInstance;
   private readonly firebaseConfig;
   private readonly app: FirebaseApp;
   private user?: User;
-  private readonly $q = useQuasar();
 
   constructor(baseUrl: string) {
     this.apiClient = axios.create({
@@ -37,10 +36,11 @@ export class TvrTicketApiClient {
   async refreshToken() {
     if (!this.user) {
       const userMailAddress =
-        this.$q.sessionStorage.getItem<string>('userMailAddress');
-      const password = this.$q.sessionStorage.getItem<string>('password');
+        SessionStorage.getItem<string>('userMailAddress');
+      const password = SessionStorage.getItem<string>('password');
 
       if (userMailAddress === null || password === null) {
+        console.log(`mailAddress: ${userMailAddress}`);
         throw new Error();
       }
 
@@ -59,7 +59,7 @@ export class TvrTicketApiClient {
     const userCredentials = await signInWithEmailAndPassword(
       auth,
       currentUser,
-      password
+      atob(password)
     );
     this.user = userCredentials.user;
 

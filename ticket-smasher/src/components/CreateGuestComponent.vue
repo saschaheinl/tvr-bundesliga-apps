@@ -21,6 +21,7 @@
 import { defineComponent, reactive } from 'vue';
 import { useQuasar } from 'quasar';
 import { GuestToCreate } from 'components/models';
+import { TvrTicketApiClient } from 'components/tvrTicketApiClient';
 
 export default defineComponent({
   name: 'CreateGuestComponent',
@@ -30,7 +31,8 @@ export default defineComponent({
       name: '',
       emailAddress: '',
     });
-    const API_BASE_URL = process.env.VUE_APP_TICKET_API_BASE_URL;
+
+    const apiClient = new TvrTicketApiClient(process.env.VUE_APP_TICKET_API_BASE_URL ?? '');
 
     const onSubmit = async () => {
       if (
@@ -52,32 +54,22 @@ export default defineComponent({
         emailAddress: guestForCreation.emailAddress,
       };
 
-      const response = await fetch(`${API_BASE_URL}/guests`, {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(guestToCreate),
-      });
-      if (!response.ok) {
+      try {
+        await apiClient.createNewGuest(guestToCreate);
+        $q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Gast angelegt!',
+        });
+      } catch (e) {
         $q.notify({
           color: 'red',
           textColor: 'white',
           icon: 'cloud_error',
-          message: `Ein Fehler ist aufgetreten: ${
-            response.status
-          }: ${JSON.stringify(response.body)}`,
+          message: 'Ein Fehler ist aufgetreten!',
         });
-
-        return;
       }
-
-      $q.notify({
-        color: 'green-4',
-        textColor: 'white',
-        icon: 'cloud_done',
-        message: 'Gast angelegt!',
-      });
     };
 
     return {
