@@ -13,18 +13,20 @@ public class TicketDb : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Configuring Event as a required relationship
+  
         modelBuilder.Entity<Ticket>()
             .HasOne(t => t.Event)
-            .WithMany() // No inverse navigation from Event to Ticket
-            .HasForeignKey("EventId") // Assume there's an EventId FK in Ticket
-            .IsRequired(false); // Optional relationship
+            .WithMany() 
+            .HasForeignKey("EventId") 
+            .IsRequired(false);
 
-        // Configuring Guest as a required relationship
         modelBuilder.Entity<Ticket>()
             .HasOne(t => t.Guest)
-            .WithMany() // No inverse navigation from Guest to Ticket
-            .HasForeignKey("GuestId") // Assume there's a GuestId FK in Ticket
-            .IsRequired(true); // This is required in your logic
+            .WithMany()
+            .HasForeignKey(t => t.GuestId);
+
+        modelBuilder.Entity<Ticket>()
+            .Property(t => t.Id)
+            .ValueGeneratedOnAdd();
     }
 }

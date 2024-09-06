@@ -10,7 +10,8 @@ public class Ticket
     public int RemainingVisits { get; set; }
     
     public Event? Event { get; set; }
-    public Guest Guest { get; set; } 
+    public Guest Guest { get; set; }
+    public int GuestId { get; set; } 
 
     public Ticket(Event? @event, TicketType type, int includedVisits, Guest guest, decimal? price, int remainingVisits)
     {
@@ -18,6 +19,7 @@ public class Ticket
         Type = type;
         IncludedVisits = includedVisits;
         Guest = guest;
+        GuestId = guest.Id;
         Price = price;
         RemainingVisits = remainingVisits;
     }
