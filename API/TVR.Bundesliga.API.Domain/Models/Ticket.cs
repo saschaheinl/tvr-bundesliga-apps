@@ -10,8 +10,8 @@ public class Ticket
     public int RemainingVisits { get; set; }
     
     public Event? Event { get; set; }
-    public Guest Guest { get; set; }
-    
+    public Guest Guest { get; set; } 
+
     public Ticket(Event? @event, TicketType type, int includedVisits, Guest guest, decimal? price, int remainingVisits)
     {
         Event = @event;
@@ -21,6 +21,10 @@ public class Ticket
         Price = price;
         RemainingVisits = remainingVisits;
     }
+    
+#pragma warning disable CS8618 
+    private Ticket() { }
+#pragma warning restore CS8618 
 }
 
 public enum TicketType
