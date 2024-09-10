@@ -370,7 +370,7 @@ export class TvrTicketApiClient {
       response = await this.apiClient.post('/tickets', ticket);
     }
 
-    if (response.status !== 200) {
+    if (response.status !== 201) {
       console.log(
         `Error while creating ticket. Received status code ${response.status}`
       );
@@ -380,6 +380,16 @@ export class TvrTicketApiClient {
     }
 
     return response.data;
+
+    /*return {
+      id: response.data['id'],
+      type: response.data['type'],
+      includedVisits: response.data['includedVisits'],
+      price: response.data['price'] ?? undefined,
+      remainingVisits: response.data['remainingVisits'],
+      eventId: response.data['eventId'] ?? undefined,
+      guestId: response.data['guestId']
+    }*/
   }
 
   async getTicketById(id: number): Promise<Ticket> {

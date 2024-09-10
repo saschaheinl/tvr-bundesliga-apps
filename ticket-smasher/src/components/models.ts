@@ -57,6 +57,6 @@ export interface Ticket {
   includedVisits: number;
   remainingVisits: number;
   price?: number;
-  event: Event;
-  guest: Guest;
+  eventId: number;
+  guestId: number;
 }

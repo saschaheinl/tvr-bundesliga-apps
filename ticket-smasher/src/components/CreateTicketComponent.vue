@@ -84,12 +84,12 @@ export default defineComponent({
 
     const showQRCodeModal = ref(false);
     const qrCodeUrl = ref<string>('');
-    let ticket = {} as Ticket;
+    let ticket = ref<Ticket>();
 
     async function onSubmit() {
       console.log(ticketForCreation.value);
       try {
-        ticket = await apiClient.createNewTicket(ticketForCreation.value);
+        ticket.value = await apiClient.createNewTicket(ticketForCreation.value);
         $q.notify({
           color: 'green-4',
           textColor: 'white',
@@ -104,10 +104,12 @@ export default defineComponent({
           icon: 'cloud_error',
           message: 'Ein Fehler ist aufgetreten!'
         });
+
+        return;
       }
 
       // Generate the QR Code
-      qrCodeUrl.value = await QRCode.toDataURL(ticket.id.toString());
+      qrCodeUrl.value = await QRCode.toDataURL(ticket.value.id.toString());
 
       // Open the modal
       showQRCodeModal.value = true;
