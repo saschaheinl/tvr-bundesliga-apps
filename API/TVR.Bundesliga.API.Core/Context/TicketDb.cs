@@ -10,23 +10,4 @@ public class TicketDb : DbContext
     public TicketDb(DbContextOptions<TicketDb> options) : base(options)
     {
     }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-  
-        modelBuilder.Entity<Ticket>()
-            .HasOne(t => t.Event)
-            .WithMany() 
-            .HasForeignKey("EventId") 
-            .IsRequired(false);
-
-        modelBuilder.Entity<Ticket>()
-            .HasOne(t => t.Guest)
-            .WithMany()
-            .HasForeignKey(t => t.GuestId);
-
-        modelBuilder.Entity<Ticket>()
-            .Property(t => t.Id)
-            .ValueGeneratedOnAdd();
-    }
 }

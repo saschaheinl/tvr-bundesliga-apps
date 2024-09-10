@@ -26,13 +26,6 @@ public class AddNewTicketUseCase(TicketDb ticketContext, EventDb eventContext, G
             @event = foundEvent ?? throw new Exception("Invalid EventId.");
         }
 
-        /*var existingTicketsForGuest = await ticketContext.Tickets.FirstOrDefaultAsync(t =>
-            t.Guest.Id == request.GuestId, cancellationToken);
-        if (existingTicket is not null)
-        {
-            throw new ArgumentException("This ticket already exists.");
-        }*/
-
         var ticketType = request.Type switch
         {
             CreateTicketRequest.CreationTicketType.Free => TicketType.Free,
@@ -40,7 +33,7 @@ public class AddNewTicketUseCase(TicketDb ticketContext, EventDb eventContext, G
             _ => TicketType.Single
         };
 
-        var ticketToCreate = new Ticket(@event, ticketType, request.IncludedVisits, guest, request.Price,
+        var ticketToCreate = new Ticket(@event, ticketType, request.IncludedVisits, guest.Id, request.Price,
             request.IncludedVisits);
 
         ticketContext.Tickets.Add(ticketToCreate);

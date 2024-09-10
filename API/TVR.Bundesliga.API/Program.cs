@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var dbConnectionString = "Server=34.79.153.4;Port=5432;Database=postgres;User Id=test;Password=123456"; //Environment.GetEnvironmentVariable("POSTGRESQL_CONNECTION_STRING") ?? string.Empty;
+var dbConnectionString = Environment.GetEnvironmentVariable("POSTGRESQL_CONNECTION_STRING") ?? string.Empty;
 if (string.IsNullOrEmpty(dbConnectionString))
 {
     throw new ArgumentException("Critical environment variable is missing.");

@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace lets_test.Migrations
+namespace TVR.Bundesliga.API.Core.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

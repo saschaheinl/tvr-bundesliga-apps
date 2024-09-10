@@ -7,7 +7,7 @@ using TVR.Bundesliga.API.Core.Context;
 
 #nullable disable
 
-namespace lets_test.Migrations
+namespace TVR.Bundesliga.API.Core.Migrations
 {
     [DbContext(typeof(GuestDb))]
     partial class GuestDbModelSnapshot : ModelSnapshot
@@ -21,7 +21,7 @@ namespace lets_test.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("lets_test.Models.Guest", b =>
+            modelBuilder.Entity("TVR.Bundesliga.API.Domain.Models.Guest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

@@ -8,7 +8,7 @@ using TVR.Bundesliga.API.Core.Context;
 
 #nullable disable
 
-namespace lets_test.Migrations.EventDbMigrations
+namespace TVR.Bundesliga.API.Core.Migrations.EventDbMigrations
 {
     [DbContext(typeof(EventDb))]
     partial class EventDbModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace lets_test.Migrations.EventDbMigrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("lets_test.Models.Event", b =>
+            modelBuilder.Entity("TVR.Bundesliga.API.Domain.Models.Event", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

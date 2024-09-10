@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace lets_test.Migrations.EventDbMigrations
+namespace TVR.Bundesliga.API.Core.Migrations.EventDbMigrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -18,9 +18,9 @@ namespace lets_test.Migrations.EventDbMigrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     League = table.Column<string>(type: "text", nullable: true),
-                    Date = table.Column<DateOnly>(type: "date", nullable: true)
+                    Date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {

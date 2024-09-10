@@ -8,7 +8,7 @@ using TVR.Bundesliga.API.Core.Context;
 
 #nullable disable
 
-namespace lets_test.Migrations.TicketDbMigrations
+namespace TVR.Bundesliga.API.Core.Migrations.TicketDbMigrations
 {
     [DbContext(typeof(TicketDb))]
     partial class TicketDbModelSnapshot : ModelSnapshot
@@ -45,27 +45,6 @@ namespace lets_test.Migrations.TicketDbMigrations
                     b.ToTable("Event");
                 });
 
-            modelBuilder.Entity("TVR.Bundesliga.API.Domain.Models.Guest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Guest");
-                });
-
             modelBuilder.Entity("TVR.Bundesliga.API.Domain.Models.Ticket", b =>
                 {
                     b.Property<int>("Id")
@@ -96,8 +75,6 @@ namespace lets_test.Migrations.TicketDbMigrations
 
                     b.HasIndex("EventId");
 
-                    b.HasIndex("GuestId");
-
                     b.ToTable("Tickets");
                 });
 
@@ -107,15 +84,7 @@ namespace lets_test.Migrations.TicketDbMigrations
                         .WithMany()
                         .HasForeignKey("EventId");
 
-                    b.HasOne("TVR.Bundesliga.API.Domain.Models.Guest", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Event");
-
-                    b.Navigation("Guest");
                 });
 #pragma warning restore 612, 618
         }

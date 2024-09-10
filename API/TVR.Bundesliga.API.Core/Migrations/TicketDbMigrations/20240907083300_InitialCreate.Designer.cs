@@ -9,11 +9,11 @@ using TVR.Bundesliga.API.Core.Context;
 
 #nullable disable
 
-namespace TVR.Bundesliga.API.Core.Migrations
+namespace TVR.Bundesliga.API.Core.Migrations.TicketDbMigrations
 {
     [DbContext(typeof(TicketDb))]
-    [Migration("20240906224009_RemoveGuestIdUniqueContraint")]
-    partial class RemoveGuestIdUniqueContraint
+    [Migration("20240907083300_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,27 +48,6 @@ namespace TVR.Bundesliga.API.Core.Migrations
                     b.ToTable("Event");
                 });
 
-            modelBuilder.Entity("TVR.Bundesliga.API.Domain.Models.Guest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Guest");
-                });
-
             modelBuilder.Entity("TVR.Bundesliga.API.Domain.Models.Ticket", b =>
                 {
                     b.Property<int>("Id")
@@ -99,8 +78,6 @@ namespace TVR.Bundesliga.API.Core.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.HasIndex("GuestId");
-
                     b.ToTable("Tickets");
                 });
 
@@ -110,15 +87,7 @@ namespace TVR.Bundesliga.API.Core.Migrations
                         .WithMany()
                         .HasForeignKey("EventId");
 
-                    b.HasOne("TVR.Bundesliga.API.Domain.Models.Guest", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Event");
-
-                    b.Navigation("Guest");
                 });
 #pragma warning restore 612, 618
         }
