@@ -186,6 +186,18 @@ app.MapGet("/tickets/{ticketId:int}", (int ticketId, IMediator mediator, Cancell
     .ProducesProblem(StatusCodes.Status400BadRequest)
     .RequireAuthorization();
 
+app.MapPut("/tickets/{ticketId:int}",
+        (int ticketId, UpdateTicketRequest request, IMediator mediator, CancellationToken cancellationToken) =>
+        {
+            var query = new UpdateTicketByIdCommand(ticketId, request.EventId, request.GuestId, request.RemainingVisits,
+                request.Price);
+
+            return mediator.Send(query, cancellationToken);
+        })
+    .Produces<Ticket>()
+    .ProducesProblem(StatusCodes.Status400BadRequest)
+    .RequireAuthorization();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
