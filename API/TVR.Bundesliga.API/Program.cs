@@ -48,6 +48,15 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod()
                 .SetIsOriginAllowed(_ => true);
         });
+    options.AddPolicy("AllowEntryDrop",
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:3000", "https://drop.tvr.saschahei.nl")
+                .SetIsOriginAllowedToAllowWildcardSubdomains()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed(_ => true);
+        });
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -208,6 +217,7 @@ if (app.Environment.IsDevelopment())
 if (app.Environment.IsProduction())
 {
     app.UseCors("Allow Ticket Smasher");
+    app.UseCors("AllowEntryDrop");
 }
 
 app.Run();
