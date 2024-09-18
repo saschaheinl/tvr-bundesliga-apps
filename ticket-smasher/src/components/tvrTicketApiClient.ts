@@ -249,9 +249,9 @@ export class TvrTicketApiClient {
       response = await this.apiClient.post('/guests', guest);
     }
 
-    if (response.status !== 201 || 204 || 204) {
+    if (response.status !== 201) {
       console.log(
-        `Error while creating gues in API. Received HTTP status ${response.status}`
+        `Error while creating guest in API. Received HTTP status ${response.status}`
       );
       console.log(response.data);
 
