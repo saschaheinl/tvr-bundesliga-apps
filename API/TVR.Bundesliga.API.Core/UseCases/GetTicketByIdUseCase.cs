@@ -1,15 +1,26 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using TVR.Bundesliga.API.Core.Context;
+using MongoDB.Driver;
 using TVR.Bundesliga.API.Core.Queries;
 using TVR.Bundesliga.API.Domain.Models;
 
 namespace TVR.Bundesliga.API.Core.UseCases;
 
-public class GetTicketByIdUseCase (TicketDb context) : IRequestHandler<GetTicketByIdQuery, Ticket?>
+public class GetTicketByIdUseCase (IMongoClient mongoClient) : IRequestHandler<GetTicketByIdQuery, V2Ticket>
 {
-    public Task<Ticket?> Handle(GetTicketByIdQuery request, CancellationToken cancellationToken)
+    public Task<V2Ticket> Handle(GetTicketByIdQuery request, CancellationToken cancellationToken)
     {
-        return context.Tickets.FirstOrDefaultAsync(t => t.Id == request.TicketId, cancellationToken);
+        var dbName = Environment.GetEnvironmentVariable("MONGO_DB_DATABASE_NAME");
+        if (dbName is null)
+        {
+            throw new ArgumentNullException();
+        }
+
+        var database = mongoClient.GetDatabase(dbName);
+        var collection = database.GetCollection<V2Ticket>("Tickets");
+        var filter = Builders<V2Ticket>.Filter.Eq("_id", request.TicketId);
+        
+        return collection.Find(filter).FirstOrDefaultAsync(cancellationToken);
+        
+        
     }
 }

@@ -3,4 +3,4 @@ using TVR.Bundesliga.API.Domain.Models;
 
 namespace TVR.Bundesliga.API.Core.Queries;
 
-public record GetTicketByIdQuery(int TicketId) : IRequest<Ticket?>;
+public record GetTicketByIdQuery(string TicketId) : IRequest<V2Ticket>;
