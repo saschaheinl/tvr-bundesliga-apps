@@ -11,7 +11,12 @@ using TVR.Bundesliga.API.Domain.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "TVR.Bundesliga.API.xml"));
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "TVR.Bundesliga.API.Contracts.xml"));
+});
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.Load("TVR.Bundesliga.API.Core")));
 
 builder.Services.AddSingleton<IMongoClient>(
@@ -88,10 +93,19 @@ app.MapGet("/tickets/{ticketId}", (string ticketId, IMediator mediator, Cancella
 
         return mediator.Send(query, cancellationToken);
     })
-    .Produces<Ticket>()
+    .Produces<V2Ticket>()
     .ProducesProblem(StatusCodes.Status400BadRequest)
     .RequireAuthorization();
 
+app.MapPost("tickets/{ticketId}/scans",
+    (string ticketId, ScanTicketRequest request, IMediator mediator, CancellationToken cancellationToken) =>
+    {
+        var query = new ScanTicketCommand(ticketId, request.Guests, request.Username);
+        
+        return mediator.Send(query, cancellationToken);
+    })
+    .Produces<V2Ticket>()
+    .RequireAuthorization();
 
 if (app.Environment.IsDevelopment())
 {

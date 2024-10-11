@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TVR.Bundesliga.API.Contracts</name>
+    </assembly>
+    <members>
+        <member name="T:TVR.Bundesliga.API.Contracts.Requests.CreateV2TicketRequest">
+            <summary>
+            Request for creating a new ticket.
+            </summary>
+            <param name="guestName">Name of the guest who this ticket is for.</param>
+            <param name="guestEmail">Email address of this guest to send the ticket to (optional).</param>
+            <param name="shouldSendEmail">Defines whether an email is sent.</param>
+            <param name="includedVisits">Amount of included visits</param>
+            <param name="createdBy">User who created the ticket</param>
+        </member>
+        <member name="M:TVR.Bundesliga.API.Contracts.Requests.CreateV2TicketRequest.#ctor(System.String,System.String,System.Boolean,System.Int32,System.String)">
+            <summary>
+            Request for creating a new ticket.
+            </summary>
+            <param name="guestName">Name of the guest who this ticket is for.</param>
+            <param name="guestEmail">Email address of this guest to send the ticket to (optional).</param>
+            <param name="shouldSendEmail">Defines whether an email is sent.</param>
+            <param name="includedVisits">Amount of included visits</param>
+            <param name="createdBy">User who created the ticket</param>
+        </member>
+        <member name="P:TVR.Bundesliga.API.Contracts.Requests.CreateV2TicketRequest.GuestName">
+            <summary>
+            Name of the guest who this ticket is for.
+            </summary>
+        </member>
+        <member name="P:TVR.Bundesliga.API.Contracts.Requests.CreateV2TicketRequest.GuestEmail">
+            <summary>
+            Email address of this guest to send the ticket to (optional).
+            </summary>
+        </member>
+        <member name="P:TVR.Bundesliga.API.Contracts.Requests.CreateV2TicketRequest.ShouldSendEmail">
+            <summary>
+            Defines whether an email is sent.
+            </summary>
+        </member>
+        <member name="P:TVR.Bundesliga.API.Contracts.Requests.CreateV2TicketRequest.IncludedVisits">
+            <summary>
+            Amount of included visits.
+            </summary>
+        </member>
+        <member name="P:TVR.Bundesliga.API.Contracts.Requests.CreateV2TicketRequest.CreatedBy">
+            <summary>
+            User who creates this ticket.
+            </summary>
+        </member>
+        <member name="T:TVR.Bundesliga.API.Contracts.Requests.ScanTicketRequest">
+            <summary>
+            Request for scanning a ticket.
+            </summary>
+            <param name="guests">Amount of guests who used this ticket.</param>
+            <param name="username">User who is scanning.</param>
+        </member>
+        <member name="M:TVR.Bundesliga.API.Contracts.Requests.ScanTicketRequest.#ctor(System.Int32,System.String)">
+            <summary>
+            Request for scanning a ticket.
+            </summary>
+            <param name="guests">Amount of guests who used this ticket.</param>
+            <param name="username">User who is scanning.</param>
+        </member>
+        <member name="P:TVR.Bundesliga.API.Contracts.Requests.ScanTicketRequest.Guests">
+            <summary>
+            Amount of guests who used this ticket.
+            </summary>
+        </member>
+        <member name="P:TVR.Bundesliga.API.Contracts.Requests.ScanTicketRequest.Username">
+            <summary>
+            User who is scanning.
+            </summary>
+        </member>
+    </members>
+</doc>

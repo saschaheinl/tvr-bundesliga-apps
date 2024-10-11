@@ -20,7 +20,5 @@ public class GetTicketByIdUseCase (IMongoClient mongoClient) : IRequestHandler<G
         var filter = Builders<V2Ticket>.Filter.Eq("_id", request.TicketId);
         
         return collection.Find(filter).FirstOrDefaultAsync(cancellationToken);
-        
-        
     }
 }
