@@ -55,4 +55,7 @@ jobs:
           --set-env-vars ASPNETCORE_ENVIRONMENT=${{ secrets.ASPNETCORE_ENVIRONMENT }},\
           MONGO_DB_CONNECTION_STRING="${{ secrets.MONGO_DB_CONNECTION_STRING }}",\
           MONGO_DB_DATABASE_NAME="${{ secrets.MONGO_DB_DATABASE_NAME }}",\
-          GOOGLE_PROJECT_NAME=${{ secrets.GOOGLE_PROJECT_NAME }}
+          GOOGLE_PROJECT_NAME=${{ secrets.GOOGLE_PROJECT_NAME }},\
+          QR_CODE_BUCKET=${{ secrets.QR_CODE_BUCKET }},\
+          QR_CODE_BUCKET_BASEURL=${{ secrets.QR_CODE_BUCKET_BASEURL }},\
+          STORAGE_ACCOUNT=${{ secrets.STORAGE_ACCOUNT }}

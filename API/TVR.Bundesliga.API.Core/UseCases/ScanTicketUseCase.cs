@@ -27,15 +27,22 @@ public class ScanTicketUseCase(IMongoClient mongoClient) : IRequestHandler<ScanT
             throw new ArgumentException();
         }
 
+        if (ticket.RemainingVisits < guests)
+        {
+            throw new ArgumentException();
+        }
+        
         var scanInformation = new Scan(user, DateTimeOffset.UtcNow, guests);
         var update = Builders<V2Ticket>.Update
             .Push(t => t.Scans, scanInformation)
-            .Set(t => t.LastModified, DateTimeOffset.UtcNow);
+            .Set(t => t.LastModified, DateTimeOffset.UtcNow)
+            .Set(t => t.RemainingVisits, ticket.RemainingVisits - guests);
         await collection.UpdateOneAsync(filter, update,null, cancellationToken);
 
         ticket.Scans.Add(scanInformation);
         ticket.LastModified = DateTimeOffset.UtcNow;
+        ticket.RemainingVisits -= guests;
+        
         return ticket;
-
     }
 }

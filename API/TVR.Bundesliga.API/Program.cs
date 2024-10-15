@@ -11,12 +11,7 @@ using TVR.Bundesliga.API.Domain.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "TVR.Bundesliga.API.xml"));
-    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "TVR.Bundesliga.API.Contracts.xml"));
-});
-
+builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.Load("TVR.Bundesliga.API.Core")));
 
 builder.Services.AddSingleton<IMongoClient>(

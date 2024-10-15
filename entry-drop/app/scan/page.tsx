@@ -7,26 +7,33 @@ import axios from "axios";
 import { outline, Scanner } from "@yudiel/react-qr-scanner";
 
 interface TicketData {
-    id: number;
-    type: number;
-    includedVisits: number;
+    id: string;
+    guestName: string;
+    guestEmail?: string | null;
+    totalVisits: number;
     remainingVisits: number;
-    price: number | null;
-    eventId: number | null;
-    guestId: number;
+    price: number;
+    wasSentByEmail: boolean;
+    created: string;
+    createdBy: string;
+    lastModified: string;
+    qrCode: QrCodeDetails;
+    scans: Scan[];
 }
 
-interface TicketForUpdate {
-    eventId?: number;
-    guestId: number;
-    remainingVisits: number;
-    price?: number;
+interface QrCodeDetails {
+    locationOfImage: string;
+    qrCodeAsBase64: string;
+}
+
+interface Scan {
+    guests: number;
+    username: string;
 }
 
 interface GuestData {
-    id: number;
     name: string;
-    emailAddress: string;
+    emailAddress?: string;
 }
 
 const Scan = () => {
@@ -42,17 +49,18 @@ const Scan = () => {
         console.log(user);
         if (!user) return;
         if (ticketData) return;
-        
+
         try {
             const token = await user.getIdToken();
             const response = await axios.get<TicketData>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/tickets/${ticketId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            const guestResponse = await axios.get<GuestData>(`${process.env.NEXT_PUBLIC_API_BASE_URL}/guests/${response.data.guestId}`, {
-                headers: { Authorization: `Bearer ${token}`},
-            });
+            const guestData: GuestData = {
+                name: response.data.guestName,
+                emailAddress: response.data.guestEmail ?? ''
+            }
             setTicketData(response.data);
-            setGuestData(guestResponse.data);
+            setGuestData(guestData);
         } catch (err) {
             setError("Ticket not found or invalid.");
         }
@@ -63,29 +71,27 @@ const Scan = () => {
 
         const remainingVisits = ticketData!.remainingVisits - parseInt(visitors);
         if (remainingVisits < 0) {
-            alert(`${Math.abs(remainingVisits)} weiteres Ticket nötig.`);  
+            alert(`${Math.abs(remainingVisits)} weiteres Ticket nötig.`);
             return;
         }
 
         try {
             const token = await user.getIdToken();
-            const update: TicketForUpdate = {
-                eventId: ticketData!.eventId ?? undefined,
-                guestId: ticketData!.guestId,
-                remainingVisits: remainingVisits,
-                price: ticketData!.price ?? undefined
+            const scan: Scan = {
+                guests: parseInt(visitors),
+                username: user.email ?? user.displayName ?? ''
             }
-            
-            await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/tickets/${ticketData!.id}`, {
-                ...update,
+
+            await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/tickets/${ticketData!.id}/scans`, {
+                ...scan,
             }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            
+
             setTicketData(null);
         } catch (err) {
             setError("Error updating ticket.");
-            
+
             return;
         }
     };
@@ -109,7 +115,7 @@ const Scan = () => {
                     <div>
                         <h2 className="text-xl font-bold">Ticket Details</h2>
                         <p>Gast: {guestData.name}</p>
-                        <p>Besuche insgesamt: {ticketData.includedVisits}</p>
+                        <p>Besuche insgesamt: {ticketData.totalVisits}</p>
                         <p><b>Besuche verbleibend: {ticketData.remainingVisits}</b></p>
                         <label className="block mt-4">
                             Number of Visitors:
