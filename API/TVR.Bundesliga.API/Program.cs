@@ -1,4 +1,6 @@
 using System.Reflection;
+using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Storage.V1;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -16,7 +18,11 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.L
 
 builder.Services.AddSingleton<IMongoClient>(
     new MongoClient(Environment.GetEnvironmentVariable("MONGO_DB_CONNECTION_STRING")) ??
-        throw new ArgumentException("Missing Environment variable"));  
+        throw new ArgumentException("Missing Environment variable"));
+
+var base64EncodedBytes = Convert.FromBase64String(Environment.GetEnvironmentVariable("STORAGE_ACCOUNT") ?? string.Empty);
+var creds = GoogleCredential.FromJson(System.Text.Encoding.UTF8.GetString(base64EncodedBytes));
+builder.Services.AddSingleton<StorageClient>(await StorageClient.CreateAsync(creds));
 
 builder.Services.AddCors(options =>
 {

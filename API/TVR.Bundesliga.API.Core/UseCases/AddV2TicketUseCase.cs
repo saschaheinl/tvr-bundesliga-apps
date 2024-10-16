@@ -9,7 +9,7 @@ using TVR.Bundesliga.API.Domain.Models;
 
 namespace TVR.Bundesliga.API.Core.UseCases;
 
-public class AddV2TicketUseCase(IMongoClient mongoClient) : IRequestHandler<AddV2TicketCommand, V2Ticket>
+public class AddV2TicketUseCase(IMongoClient mongoClient, StorageClient storage) : IRequestHandler<AddV2TicketCommand, V2Ticket>
 {
     public async Task<V2Ticket> Handle(AddV2TicketCommand request, CancellationToken cancellationToken)
     {
@@ -46,9 +46,7 @@ public class AddV2TicketUseCase(IMongoClient mongoClient) : IRequestHandler<AddV
         // 3. If E-Mail is needed, upload QR Code to Google Cloud Storage
 
         Google.Apis.Storage.v1.Data.Object? uploadedObject;
-        var creds = GoogleCredential.FromJson(Environment.GetEnvironmentVariable("STORAGE_ACCOUNT"));
         var bucket = Environment.GetEnvironmentVariable("QR_CODE_BUCKET") ?? throw new ArgumentException("No QR code bucket environment variable");
-        var storage = await StorageClient.CreateAsync(creds);
         uploadedObject = await storage.UploadObjectAsync(
             bucket, 
             $"{ticketId.ToString()}.png",
