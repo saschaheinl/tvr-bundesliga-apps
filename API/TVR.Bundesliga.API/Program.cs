@@ -45,7 +45,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowEntryDrop",
         policy =>
         {
-            policy.WithOrigins("https://localhost:3000", "https://drop.tvr.saschahei.nl")
+            policy.WithOrigins("https://n8n.saschahei.nl","https://localhost:3000", "https://drop.tvr.saschahei.nl")
                 .SetIsOriginAllowedToAllowWildcardSubdomains()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
