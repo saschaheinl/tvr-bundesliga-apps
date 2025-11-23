@@ -117,8 +117,9 @@ if (app.Environment.IsDevelopment())
 
 if (app.Environment.IsProduction())
 {
-    app.UseCors("Allow Ticket Smasher");
-    app.UseCors("AllowEntryDrop");
+    app.UseCors("AllowAll");
+    /*app.UseCors("Allow Ticket Smasher");
+    app.UseCors("AllowEntryDrop");*/
 }
 
 app.Run();
